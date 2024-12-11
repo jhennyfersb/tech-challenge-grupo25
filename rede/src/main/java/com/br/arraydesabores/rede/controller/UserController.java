@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping
+@RequestMapping("/user")
 @AllArgsConstructor
 public class UserController {
 
@@ -23,14 +23,19 @@ public class UserController {
         return userService.create(userDTO);
     }
 
-    @GetMapping
-    public Page<User> findAll(@PageableDefault(size = 10, page = 0) Pageable pageable) {
-        return userService.findAll(pageable);
-    }
+//    @GetMapping
+//    public Page<User> findAll(@PageableDefault(size = 10, page = 0) Pageable pageable) {
+//        return userService.findAll(pageable);
+//    }
 
     @GetMapping("/{id}")
     public User findById(@PathVariable("id") Long id) {
         return userService.findById(id);
+    }
+
+    @GetMapping
+    public ResponseEntity<String> getUser(){
+        return ResponseEntity.ok("sucesso!");
     }
 
     @PutMapping("/{id}")
