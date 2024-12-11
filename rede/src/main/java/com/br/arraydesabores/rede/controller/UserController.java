@@ -1,5 +1,6 @@
 package com.br.arraydesabores.rede.controller;
 
+import com.br.arraydesabores.rede.dto.ChangePasswordDTO;
 import com.br.arraydesabores.rede.dto.UserDTO;
 import com.br.arraydesabores.rede.model.User;
 import com.br.arraydesabores.rede.service.UserService;
@@ -23,10 +24,10 @@ public class UserController {
         return userService.create(userDTO);
     }
 
-//    @GetMapping
-//    public Page<User> findAll(@PageableDefault(size = 10, page = 0) Pageable pageable) {
-//        return userService.findAll(pageable);
-//    }
+    @GetMapping("/users")
+    public Page<User> findAll(@PageableDefault(size = 10, page = 0) Pageable pageable) {
+        return userService.findAll(pageable);
+    }
 
     @GetMapping("/{id}")
     public User findById(@PathVariable("id") Long id) {
@@ -44,10 +45,26 @@ public class UserController {
         return userService.update(id, userDTO);
     }
 
+    @PutMapping("/{id}/change-password")
+    public ResponseEntity<String> changePassword(@PathVariable Long id,
+                                                 @RequestBody ChangePasswordDTO changePasswordDTO) {
+        try {
+            userService.changePassword(id, changePasswordDTO.oldPassword(), changePasswordDTO.newPassword());
+            return ResponseEntity.ok("Senha alterada com sucesso");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         userService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
 }

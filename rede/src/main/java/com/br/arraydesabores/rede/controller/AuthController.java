@@ -45,12 +45,18 @@ public class AuthController {
             newUser.setPassword(passwordEncoder.encode(body.password()));
             newUser.setEmail(body.email());
             newUser.setName(body.name());
+            newUser.getRoles().add("ROLE_USER");
+
+            if(body.email().equals("admin@fiap.com")) {
+                newUser.getRoles().add("ROLE_ADMIN");  // Se for um admin, adiciona ROLE_ADMIN
+            }
+
             this.repository.save(newUser);
 
             String token = this.tokenService.generateToken(newUser);
             return ResponseEntity.ok(new ResponseDTO(newUser.getName(), token));
             }
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.badRequest().body("Email already in use");
         }
 
 }
