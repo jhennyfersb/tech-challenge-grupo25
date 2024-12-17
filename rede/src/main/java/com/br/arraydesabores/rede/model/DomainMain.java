@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public abstract class DomainMain {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //UUID
     private Long id;
 
     @CreatedDate
