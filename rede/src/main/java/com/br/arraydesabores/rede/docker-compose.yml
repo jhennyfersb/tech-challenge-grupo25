@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  web:
+    image: openjdk:21-jdk
+    container_name: my_java_app
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "8080:8080"
+    command: ["java", "-jar", "seu-aplicativo.jar"]  # Substitua "seu-aplicativo.jar" pelo nome do seu JAR
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:h2:mem:arraydesabores
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.h2.Driver
+      - SPRING_DATASOURCE_USERNAME=username
+      - SPRING_DATASOURCE_PASSWORD=password
+
+  h2:
+    image: oscarfonts/h2
+    container_name: my_h2_db
+    ports:
+      - "8082:8082"  # Porta para acessar a interface web do H2
+    environment:
+      - H2_OPTIONS=-tcpAllowOthers
+
+volumes:
+  db_data:
