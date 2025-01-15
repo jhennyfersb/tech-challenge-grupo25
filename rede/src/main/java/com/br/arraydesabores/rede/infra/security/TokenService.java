@@ -8,10 +8,7 @@ import com.br.arraydesabores.rede.model.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.*;
 
 @Service
 public class TokenService {
@@ -23,15 +20,13 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
-            String token = JWT.create()
+            return JWT.create()
                     .withIssuer("login-auth-api")
                     .withSubject(user.getEmail())
                     .withExpiresAt(this.generateExpirationDate())
                     .sign(algorithm);
-            return token;
         } catch (JWTCreationException exception){
             throw new RuntimeException("Error while authenticating");
-
         }
 
     }
@@ -50,7 +45,8 @@ public class TokenService {
     }
 
     private Instant generateExpirationDate(){
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.ofHours(-3));
+        ZoneId zoneId = ZoneId.of("America/Sao_Paulo");
+        return LocalDateTime.now(zoneId).plusHours(2).toInstant(ZoneOffset.UTC);
     }
 
 }

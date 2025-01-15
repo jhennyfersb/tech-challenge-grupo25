@@ -1,6 +1,8 @@
 package com.br.arraydesabores.rede.service;
 
+import com.br.arraydesabores.rede.dto.RegisterRequestDTO;
 import com.br.arraydesabores.rede.dto.UserDTO;
+import com.br.arraydesabores.rede.enums.Role;
 import com.br.arraydesabores.rede.model.User;
 import com.br.arraydesabores.rede.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -9,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor

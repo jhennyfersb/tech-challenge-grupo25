@@ -1,6 +1,7 @@
 package com.br.arraydesabores.rede.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 public abstract class DomainMain {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //UUID
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @CreatedDate

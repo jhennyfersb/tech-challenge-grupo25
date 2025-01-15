@@ -4,6 +4,7 @@ import com.br.arraydesabores.rede.dto.ChangePasswordDTO;
 import com.br.arraydesabores.rede.dto.UserDTO;
 import com.br.arraydesabores.rede.model.User;
 import com.br.arraydesabores.rede.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,19 +36,19 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<String> getUser(){
-        return ResponseEntity.ok("sucesso!");
+    public ResponseEntity<?> getUser(@PathVariable("id") Long id){
+        return ResponseEntity.ok(userService.findById(id));
     }
 
     @PutMapping("/{id}")
     public User update(@PathVariable("id") Long id,
-                       @RequestBody UserDTO userDTO) {
+                       @Valid @RequestBody UserDTO userDTO) {
         return userService.update(id, userDTO);
     }
 
     @PutMapping("/{id}/change-password")
     public ResponseEntity<String> changePassword(@PathVariable Long id,
-                                                 @RequestBody ChangePasswordDTO changePasswordDTO) {
+                                                 @Valid @RequestBody ChangePasswordDTO changePasswordDTO) {
         try {
             userService.changePassword(id, changePasswordDTO.oldPassword(), changePasswordDTO.newPassword());
             return ResponseEntity.ok("Senha alterada com sucesso");
