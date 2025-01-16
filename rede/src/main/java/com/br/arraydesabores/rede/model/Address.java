@@ -15,7 +15,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Table(name = "tb_address")
-public class Address extends DomainMain implements Serializable {
+public class Address extends BaseModel implements Serializable {
     private String street;
     private Integer number;
     private String city;

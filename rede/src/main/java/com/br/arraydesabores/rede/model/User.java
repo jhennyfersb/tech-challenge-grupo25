@@ -18,7 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "tb_user")
-public class User extends DomainMain implements Serializable {
+public class User extends BaseModel implements Serializable {
     private String name;
     private String password;
     private String email;
