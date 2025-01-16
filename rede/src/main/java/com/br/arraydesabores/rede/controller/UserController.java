@@ -2,9 +2,11 @@ package com.br.arraydesabores.rede.controller;
 
 import com.br.arraydesabores.rede.dto.ChangePasswordDTO;
 import com.br.arraydesabores.rede.dto.UserDTO;
+import com.br.arraydesabores.rede.dto.UserResponseDTO;
 import com.br.arraydesabores.rede.model.User;
 import com.br.arraydesabores.rede.service.UserService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,31 +20,28 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final ModelMapper modelMapper;
 
     @PostMapping
-    public User create(@RequestBody UserDTO userDTO) {
-        return userService.create(userDTO);
+    public UserResponseDTO create(@RequestBody UserDTO userDTO) {
+        return modelMapper.map(userService.create(userDTO), UserResponseDTO.class);
     }
 
-    @GetMapping("/users")
-    public Page<User> findAll(@PageableDefault(size = 10, page = 0) Pageable pageable) {
-        return userService.findAll(pageable);
+    @GetMapping("/all")
+    public Page<UserResponseDTO> findAll(@PageableDefault(size = 10, page = 0) Pageable pageable) {
+        return userService.findAll(pageable)
+                .map(user -> modelMapper.map(user, UserResponseDTO.class));
     }
 
     @GetMapping("/{id}")
-    public User findById(@PathVariable("id") Long id) {
-        return userService.findById(id);
-    }
-
-    @GetMapping
-    public ResponseEntity<String> getUser(){
-        return ResponseEntity.ok("sucesso!");
+    public UserResponseDTO findById(@PathVariable("id") Long id) {
+        return modelMapper.map(userService.findById(id), UserResponseDTO.class);
     }
 
     @PutMapping("/{id}")
-    public User update(@PathVariable("id") Long id,
+    public UserResponseDTO update(@PathVariable("id") Long id,
                        @RequestBody UserDTO userDTO) {
-        return userService.update(id, userDTO);
+        return modelMapper.map(userService.update(id, userDTO), UserResponseDTO.class);
     }
 
     @PutMapping("/{id}/change-password")
@@ -62,9 +61,5 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-    }
 
 }
