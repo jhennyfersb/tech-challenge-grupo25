@@ -16,12 +16,12 @@ import java.time.LocalDateTime;
 public abstract class DomainMain {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //UUID
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @LastModifiedDate
     private LocalDateTime updatedAt;

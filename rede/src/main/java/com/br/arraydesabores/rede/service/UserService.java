@@ -1,52 +1,73 @@
 package com.br.arraydesabores.rede.service;
 
 import com.br.arraydesabores.rede.dto.UserDTO;
+import com.br.arraydesabores.rede.exception.UserNotFoundException;
 import com.br.arraydesabores.rede.model.User;
 import com.br.arraydesabores.rede.repository.UserRepository;
-import lombok.AllArgsConstructor;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
-@AllArgsConstructor
 public class UserService {
 
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public User create(UserDTO userDTO) {
-         var user = modelMapper.map(userDTO, User.class);
-         return userRepository.save(user);
+    public UserService(ModelMapper modelMapper,
+                       UserRepository userRepository,
+                       PasswordEncoder passwordEncoder) {
+        this.modelMapper = modelMapper;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public UserDTO create(UserDTO userDTO) {
+        var user = modelMapper.map(userDTO, User.class);
+        return modelMapper.map(userRepository.save(user), UserDTO.class);
     }
 
     public Page<User> findAll(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
 
-    public User findById(Long id) {
+    public User findById(Long id) throws UserNotFoundException {
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
-    public User update(Long id, UserDTO userDTO) {
-        var user = userRepository.findById(id).orElseThrow();
-        modelMapper.map(userDTO, user);
-        return userRepository.save(user);
+    @Transactional
+    public UserDTO update(Long id, UserDTO userDTO) throws UserNotFoundException {
+        var user = findById(id);
+        user.setName(userDTO.getName());
+        user.setEmail(userDTO.getEmail());
+        if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        }
+        if (userDTO.getLogin() != null) {
+            user.setLogin(userDTO.getLogin());
+        }
+
+        user.setUpdatedAt(LocalDateTime.now());
+        User updatedUser = userRepository.save(user);
+        return modelMapper.map(updatedUser, UserDTO.class);
     }
 
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }
 
-    public void changePassword(Long id, String oldPassword, String newPassword) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    public void changePassword(Long id, String oldPassword, String newPassword) throws UserNotFoundException {
+        User user = findById(id);
 
-        if(!passwordEncoder.matches(oldPassword,user.getPassword())) {
-            throw new RuntimeException("Senha antiga inválida");
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new RuntimeException("Invalid old password");
         }
 
         user.setPassword(passwordEncoder.encode(newPassword));
