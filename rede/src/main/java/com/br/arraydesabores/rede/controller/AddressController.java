@@ -34,7 +34,7 @@ public class AddressController {
     @PutMapping("/{id}")
     public ResponseEntity<AddressDTO> updateAdress(@PathVariable Long id,
                                                    @Valid @RequestBody AddressDTO addressDTO) throws UserNotFoundException {
-        addressService.updateAddress(id, addressDTO);
-        return ResponseEntity.status(200).body(addressDTO);
+        AddressDTO address = addressService.updateAddress(id, addressDTO);
+        return ResponseEntity.status(200).body(address);
     }
 }

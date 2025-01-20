@@ -45,8 +45,6 @@ public class UserService {
     @Transactional
     public UserDTO update(Long id, UserDTO userDTO) throws UserNotFoundException {
         var user = findById(id);
-
-
         user.setName(userDTO.getName());
         user.setEmail(userDTO.getEmail());
         if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {

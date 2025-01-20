@@ -1,7 +1,6 @@
 package com.br.arraydesabores.rede.model;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
