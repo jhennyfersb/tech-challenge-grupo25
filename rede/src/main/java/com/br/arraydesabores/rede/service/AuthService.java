@@ -3,7 +3,6 @@ package com.br.arraydesabores.rede.service;
 import com.br.arraydesabores.rede.dto.LoginRequestDTO;
 import com.br.arraydesabores.rede.dto.RegisterRequestDTO;
 import com.br.arraydesabores.rede.dto.ResponseDTO;
-
 import com.br.arraydesabores.rede.infra.security.TokenService;
 import com.br.arraydesabores.rede.model.User;
 import com.br.arraydesabores.rede.repository.UserRepository;
@@ -22,16 +21,12 @@ public class AuthService {
 
     private final TokenService tokenService;
 
-    private final UserService userService;
-
     public AuthService(UserRepository repository,
                        PasswordEncoder passwordEncoder,
-                       TokenService tokenService,
-                       UserService userService) {
+                       TokenService tokenService) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
         this.tokenService = tokenService;
-        this.userService = userService;
     }
 
 

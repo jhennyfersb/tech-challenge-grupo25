@@ -2,10 +2,10 @@ package com.br.arraydesabores.rede.controller;
 
 import com.br.arraydesabores.rede.dto.ChangePasswordDTO;
 import com.br.arraydesabores.rede.dto.UserDTO;
-import com.br.arraydesabores.rede.model.User;
+import com.br.arraydesabores.rede.exception.UserNotFoundException;
 import com.br.arraydesabores.rede.service.UserService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,34 +15,36 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
-@AllArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
+    private final ModelMapper modelMapper;
+
+    public UserController(UserService userService,
+                          ModelMapper modelMapper) {
+        this.userService = userService;
+        this.modelMapper = modelMapper;
+    }
+
     @PostMapping
-    public User create(@RequestBody UserDTO userDTO) {
+    public UserDTO create(@RequestBody UserDTO userDTO) {
         return userService.create(userDTO);
     }
 
     @GetMapping("/users")
-    public Page<User> findAll(@PageableDefault(size = 10, page = 0) Pageable pageable) {
-        return userService.findAll(pageable);
+    public Page<UserDTO> findAll(@PageableDefault(size = 10, page = 0) Pageable pageable) {
+        return userService.findAll(pageable).map(user -> modelMapper.map(user, UserDTO.class));
     }
 
     @GetMapping("/{id}")
-    public User findById(@PathVariable("id") Long id) {
-        return userService.findById(id);
-    }
-
-    @GetMapping
-    public ResponseEntity<?> getUser(@PathVariable("id") Long id){
-        return ResponseEntity.ok(userService.findById(id));
+    public UserDTO findById(@PathVariable("id") Long id) throws UserNotFoundException {
+        return modelMapper.map(userService.findById(id), UserDTO.class);
     }
 
     @PutMapping("/{id}")
-    public User update(@PathVariable("id") Long id,
-                       @Valid @RequestBody UserDTO userDTO) {
+    public UserDTO update(@PathVariable("id") Long id,
+                          @Valid @RequestBody UserDTO userDTO) throws UserNotFoundException {
         return userService.update(id, userDTO);
     }
 
@@ -51,7 +53,7 @@ public class UserController {
                                                  @Valid @RequestBody ChangePasswordDTO changePasswordDTO) {
         try {
             userService.changePassword(id, changePasswordDTO.oldPassword(), changePasswordDTO.newPassword());
-            return ResponseEntity.ok("Senha alterada com sucesso");
+            return ResponseEntity.ok("Password changed successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

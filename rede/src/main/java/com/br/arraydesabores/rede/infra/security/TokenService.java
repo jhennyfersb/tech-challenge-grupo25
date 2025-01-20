@@ -8,10 +8,16 @@ import com.br.arraydesabores.rede.model.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.time.*;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Service
 public class TokenService {
+
+    private static final int EXPIRATION_HOURS = 2;
+
+    private static final ZoneOffset DEFAULT_ZONE_OFFSET = ZoneOffset.ofHours(-3);
 
     @Value("${api.security.token.secret}")
     private String secret;
@@ -23,7 +29,7 @@ public class TokenService {
             return JWT.create()
                     .withIssuer("login-auth-api")
                     .withSubject(user.getEmail())
-                    .withExpiresAt(this.generateExpirationDate())
+                    .withExpiresAt(this.createExpirationInstant())
                     .sign(algorithm);
         } catch (JWTCreationException exception){
             throw new RuntimeException("Error while authenticating");
@@ -44,11 +50,7 @@ public class TokenService {
         }
     }
 
-    private Instant generateExpirationDate(){
-        ZoneId zoneId = ZoneId.of("America/Sao_Paulo");
-        //return LocalDateTime.now(zoneId).plusHours(2).toInstant(ZoneOffset.UTC);
-       return Instant.now().plusSeconds(2 * 3600); // Conversão para UTC diretamente
-
+    private Instant createExpirationInstant() {
+        return LocalDateTime.now().plusHours(EXPIRATION_HOURS).toInstant(DEFAULT_ZONE_OFFSET);
     }
-
 }

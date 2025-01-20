@@ -1,11 +1,13 @@
 package com.br.arraydesabores.rede.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.*;
-import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+
 
 @Getter
 @Setter
@@ -21,6 +23,14 @@ public class Address extends DomainMain implements Serializable {
     private Integer number;
 
     private String city;
+
+    private String state;
+
+    private String complement;
+
+    private String zipCode;
+
+    private String country;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
