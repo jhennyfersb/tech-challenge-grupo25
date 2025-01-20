@@ -14,6 +14,8 @@ services:
       - SPRING_DATASOURCE_USERNAME=sa
       - SPRING_DATASOURCE_PASSWORD=password
       - SPRING_H2_CONSOLE_ENABLED=true
+    volumes:
+      - db_data:/data/db
 
 volumes:
   db_data:

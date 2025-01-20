@@ -14,5 +14,8 @@ RUN apt-get update && apt-get install -y maven && mvn clean package -DskipTests
 # Expõe a porta que a aplicação Spring vai rodar
 EXPOSE 8080
 
+#Copia o arquivo JAR gerado para o contêiner
+COPY target/rede-0.0.1-SNAPSHOT.jar app.jar
+
 # Comando para rodar a aplicação
-CMD ["java", "-jar", "target/rede-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "app.jar"]
