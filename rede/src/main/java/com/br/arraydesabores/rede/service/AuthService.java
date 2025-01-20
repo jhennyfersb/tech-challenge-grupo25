@@ -3,7 +3,7 @@ package com.br.arraydesabores.rede.service;
 import com.br.arraydesabores.rede.dto.LoginRequestDTO;
 import com.br.arraydesabores.rede.dto.RegisterRequestDTO;
 import com.br.arraydesabores.rede.dto.ResponseDTO;
-import com.br.arraydesabores.rede.enums.Role;
+
 import com.br.arraydesabores.rede.infra.security.TokenService;
 import com.br.arraydesabores.rede.model.User;
 import com.br.arraydesabores.rede.repository.UserRepository;
@@ -36,19 +36,18 @@ public class AuthService {
 
 
     public String registerUser(RegisterRequestDTO body) throws IllegalArgumentException {
-
-//        repository.findByEmail(body.email())
-//                .orElseThrow(() -> new IllegalArgumentException("Email not found"));
+        repository.findByEmail(body.email()).ifPresent(user -> {
+            throw new IllegalArgumentException("Email already exists");
+        });
 
         User newUser = User.builder()
                 .email(body.email())
                 .password(passwordEncoder.encode(body.password()))
                 .name(body.name())
-                .roles(new HashSet<>(Collections.singleton(Role.USER)))
+                .roles(new HashSet<>(Collections.singleton("ROLE_USER")))
                 .build();
 
         User userSave = repository.save(newUser);
-
         return tokenService.generateToken(userSave);
     }
 

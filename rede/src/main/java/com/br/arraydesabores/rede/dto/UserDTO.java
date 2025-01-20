@@ -4,6 +4,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.time.LocalDateTime;
+
 public record UserDTO(
         String name,
         @NotNull
@@ -12,6 +14,6 @@ public record UserDTO(
         String password,
         @Email
         String email,
-        AddressDTO addressDTO
-) {
+        AddressDTO addressDTO,
+        LocalDateTime updatedAt) {
 }

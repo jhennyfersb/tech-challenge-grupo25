@@ -46,7 +46,9 @@ public class TokenService {
 
     private Instant generateExpirationDate(){
         ZoneId zoneId = ZoneId.of("America/Sao_Paulo");
-        return LocalDateTime.now(zoneId).plusHours(2).toInstant(ZoneOffset.UTC);
+        //return LocalDateTime.now(zoneId).plusHours(2).toInstant(ZoneOffset.UTC);
+       return Instant.now().plusSeconds(2 * 3600); // Conversão para UTC diretamente
+
     }
 
 }

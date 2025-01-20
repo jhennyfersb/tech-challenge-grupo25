@@ -2,7 +2,7 @@ package com.br.arraydesabores.rede.service;
 
 import com.br.arraydesabores.rede.dto.RegisterRequestDTO;
 import com.br.arraydesabores.rede.dto.UserDTO;
-import com.br.arraydesabores.rede.enums.Role;
+
 import com.br.arraydesabores.rede.model.User;
 import com.br.arraydesabores.rede.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -37,7 +37,7 @@ public class UserService {
     }
 
     public User update(Long id, UserDTO userDTO) {
-        var user = userRepository.findById(id).orElseThrow();
+        var user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         modelMapper.map(userDTO, user);
         return userRepository.save(user);
     }
