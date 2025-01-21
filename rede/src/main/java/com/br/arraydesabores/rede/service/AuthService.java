@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 public class AuthService {
@@ -39,6 +40,8 @@ public class AuthService {
                 .email(body.email())
                 .password(passwordEncoder.encode(body.password()))
                 .name(body.name())
+                .login(body.login())
+                .addresses(List.of(body.address()))
                 .roles(new HashSet<>(Collections.singleton("ROLE_USER")))
                 .build();
 

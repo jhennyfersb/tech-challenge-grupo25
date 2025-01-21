@@ -9,6 +9,7 @@ import com.br.arraydesabores.rede.repository.AddressRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Service
@@ -41,8 +42,11 @@ public class AddressService {
         if (Objects.nonNull(addressDTO.getUserId())) {
             existingAddress.setUser(userService.findById(addressDTO.getUserId()));
         }
+
+        existingAddress.setUpdatedAt(LocalDateTime.now());
         modelMapper.map(addressDTO, existingAddress);
         Address updatedAddress = addressRepository.save(existingAddress);
+
         return modelMapper.map(updatedAddress, AddressDTO.class);
     }
 
