@@ -33,4 +33,8 @@ public class User extends DomainMain implements Serializable {
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "user_type_id")
+    private UserType userType;
+
 }
