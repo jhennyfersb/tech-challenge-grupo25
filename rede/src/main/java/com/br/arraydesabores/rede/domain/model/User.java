@@ -12,7 +12,6 @@ import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
 public class User extends DomainMain implements Serializable {
 
     private String name;

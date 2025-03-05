@@ -16,7 +16,6 @@ public class CreateUserUseCase {
 
     public User execute(UserCreateDTO userRequest) {
         User user = modelMapper.map(userRequest, User.class);
-        User userSaved = userGateway.save(user);
-        return modelMapper.map(userSaved, User.class);
+        return userGateway.save(user);
     }
 }

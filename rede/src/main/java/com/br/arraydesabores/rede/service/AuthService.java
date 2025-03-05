@@ -28,11 +28,11 @@ public class AuthService {
 
 
     public String registerUser(RegisterRequestDTO body) throws IllegalArgumentException {
-        if (userGateway.existsByEmail(body.email())) {
+        if (userGateway.existsByEmail(body.getEmail())) {
             throw new IllegalArgumentException("Email already exists");
         }
-
-        var userSave = createUserUseCase.execute(modelMapper.map(body, UserCreateDTO.class));
+        var userCreate = modelMapper.map(body, UserCreateDTO.class);
+        var userSave = createUserUseCase.execute(userCreate);
         return tokenService.generateToken(modelMapper.map(userSave, User.class));
     }
 
@@ -49,15 +49,5 @@ public class AuthService {
         return new ResponseDTO(user.getName(), token);
     }
 
-
-    private UserDTO builderUser(RegisterRequestDTO body) {
-        return UserDTO.builder()
-                .name(body.name())
-                .login(body.login())
-                .email(body.email())
-                .password(body.password())
-                .addresses(List.of(body.address().toDTO()))
-                .build();
-    }
 
 }
