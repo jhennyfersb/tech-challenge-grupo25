@@ -1,19 +1,18 @@
 package com.br.arraydesabores.rede.service;
 
-import com.br.arraydesabores.rede.dto.UserDTO;
-import com.br.arraydesabores.rede.exception.UserNotFoundException;
-import com.br.arraydesabores.rede.model.User;
-import com.br.arraydesabores.rede.repository.UserRepository;
+import com.br.arraydesabores.rede.application.exception.UserNotFoundException;
+import com.br.arraydesabores.rede.domain.model.User;
+import com.br.arraydesabores.rede.infrastructure.entity.UserEntity;
+import com.br.arraydesabores.rede.infrastructure.repository.UserRepository;
+import com.br.arraydesabores.rede.presentation.dto.user.UserDTO;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.Email;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
-@Service
+// @Service
 public class UserService {
 
     private final ModelMapper modelMapper;
@@ -28,35 +27,21 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserDTO create(UserDTO userDTO) {
-        var user = modelMapper.map(userDTO, User.class);
-        return modelMapper.map(userRepository.save(user), UserDTO.class);
-    }
-
     public Page<User> findAll(Pageable pageable) {
-        return userRepository.findAll(pageable);
+        return userRepository.findAll(pageable).map(user -> modelMapper.map(user, User.class));
     }
 
-    public User findById(Long id) throws UserNotFoundException {
+    public User findById(Long id) {
         return userRepository.findById(id)
+                .map(user -> modelMapper.map(user, User.class))
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
     @Transactional
     public UserDTO update(Long id, UserDTO userDTO) throws UserNotFoundException {
         var user = findById(id);
-        user.setName(userDTO.getName());
-        user.setEmail(userDTO.getEmail());
-        if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        }
-        if (userDTO.getLogin() != null) {
-            user.setLogin(userDTO.getLogin());
-        }
-
-        user.setUpdatedAt(LocalDateTime.now());
-        User updatedUser = userRepository.save(user);
-        return modelMapper.map(updatedUser, UserDTO.class);
+        modelMapper.map(userDTO, user);
+        return modelMapper.map(userRepository.save(modelMapper.map(user, UserEntity.class)), UserDTO.class);
     }
 
     public void deleteById(Long id) {
@@ -71,8 +56,17 @@ public class UserService {
         }
 
         user.setPassword(passwordEncoder.encode(newPassword));
-        userRepository.save(user);
+        userRepository.save(modelMapper.map(user, UserEntity.class));
 
     }
 
+    public boolean existsByEmail(@Email String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    public UserDTO findByEmail(@Email String email) {
+        var user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        return modelMapper.map(user, UserDTO.class);
+    }
 }

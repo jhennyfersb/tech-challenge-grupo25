@@ -1,66 +1,63 @@
 package com.br.arraydesabores.rede.service;
 
-import com.br.arraydesabores.rede.dto.LoginRequestDTO;
-import com.br.arraydesabores.rede.dto.RegisterRequestDTO;
-import com.br.arraydesabores.rede.dto.ResponseDTO;
-import com.br.arraydesabores.rede.infra.security.TokenService;
-import com.br.arraydesabores.rede.model.User;
-import com.br.arraydesabores.rede.repository.UserRepository;
+import com.br.arraydesabores.rede.application.usecases.user.CreateUserUseCase;
+import com.br.arraydesabores.rede.infrastructure.gateways.UserGatewayImpl;
+import com.br.arraydesabores.rede.presentation.dto.LoginRequestDTO;
+import com.br.arraydesabores.rede.presentation.dto.RegisterRequestDTO;
+import com.br.arraydesabores.rede.presentation.dto.ResponseDTO;
+import com.br.arraydesabores.rede.presentation.dto.user.UserCreateDTO;
+import com.br.arraydesabores.rede.presentation.dto.user.UserDTO;
+import com.br.arraydesabores.rede.infrastructure.security.TokenService;
+import com.br.arraydesabores.rede.domain.model.User;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService {
 
-    private final UserRepository repository;
-
     private final PasswordEncoder passwordEncoder;
-
     private final TokenService tokenService;
-
-    public AuthService(UserRepository repository,
-                       PasswordEncoder passwordEncoder,
-                       TokenService tokenService) {
-        this.repository = repository;
-        this.passwordEncoder = passwordEncoder;
-        this.tokenService = tokenService;
-    }
+    private final ModelMapper modelMapper;
+    private final CreateUserUseCase createUserUseCase;
+    private final UserGatewayImpl userGateway;
 
 
     public String registerUser(RegisterRequestDTO body) throws IllegalArgumentException {
-        repository.findByEmail(body.email()).ifPresent(user -> {
+        if (userGateway.existsByEmail(body.email())) {
             throw new IllegalArgumentException("Email already exists");
-        });
+        }
 
-        User newUser = User.builder()
-                .email(body.email())
-                .password(passwordEncoder.encode(body.password()))
-                .name(body.name())
-                .login(body.login())
-                .addresses(List.of(body.address()))
-                .roles(new HashSet<>(Collections.singleton("ROLE_USER")))
-                .build();
-
-        User userSave = repository.save(newUser);
-        return tokenService.generateToken(userSave);
+        var userSave = createUserUseCase.execute(modelMapper.map(body, UserCreateDTO.class));
+        return tokenService.generateToken(modelMapper.map(userSave, User.class));
     }
 
 
     public ResponseDTO authenticateUser(LoginRequestDTO body) {
-        User user = repository.findByEmail(body.email())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        User user = userGateway.findByEmail(body.email())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
 
         if (!passwordEncoder.matches(body.password(), user.getPassword())) {
             throw new IllegalArgumentException("Invalid credentials");
         }
 
-        String token = tokenService.generateToken(user);
+        String token = tokenService.generateToken(modelMapper.map(user, User.class));
         return new ResponseDTO(user.getName(), token);
     }
 
+
+    private UserDTO builderUser(RegisterRequestDTO body) {
+        return UserDTO.builder()
+                .name(body.name())
+                .login(body.login())
+                .email(body.email())
+                .password(body.password())
+                .addresses(List.of(body.address().toDTO()))
+                .build();
+    }
 
 }
