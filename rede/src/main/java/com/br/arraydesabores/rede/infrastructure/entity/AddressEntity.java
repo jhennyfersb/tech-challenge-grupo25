@@ -1,6 +1,6 @@
 package com.br.arraydesabores.rede.infrastructure.entity;
 
-import com.br.arraydesabores.rede.presentation.dto.AddressDTO;
+import com.br.arraydesabores.rede.presentation.dto.address.AddressDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -36,19 +36,8 @@ public class AddressEntity extends BaseMutableEntity {
     private String country;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-    public AddressDTO toDTO() {
-        return AddressDTO.builder()
-                .street(this.street)
-                .number(this.number)
-                .city(this.city)
-                .state(this.state)
-                .complement(this.complement)
-                .zipcode(this.zipCode)
-                .country(this.country)
-                .build();
-    }
 
 }

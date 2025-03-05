@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -50,7 +50,7 @@ public class UserController {
         return modelMapper.map(createUserUseCase.execute(userRequest), UserResponseDTO.class);
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public Page<UserResponseDTO> findAll(@PageableDefault(size = 10, page = 0) Pageable pageable) {
         return findAllUsersUseCase.execute(pageable).map(user -> modelMapper.map(user, UserResponseDTO.class));
     }

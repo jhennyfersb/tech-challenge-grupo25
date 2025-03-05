@@ -2,6 +2,7 @@ package com.br.arraydesabores.rede.infrastructure.security;
 
 import com.br.arraydesabores.rede.domain.model.User;
 import com.br.arraydesabores.rede.infrastructure.repository.UserRepository;
+import com.br.arraydesabores.rede.presentation.dto.user.UserAuthDTO;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,8 +33,8 @@ public class SecurityFilter extends OncePerRequestFilter {
         var login = tokenService.validateToken(token);
 
         if (Objects.nonNull(login)) {
-            User user = userRepository.findByEmail(login)
-                    .map(entity -> modelMapper.map(entity, User.class))
+            UserAuthDTO user = userRepository.findByEmail(login)
+                    .map(entity -> modelMapper.map(entity, UserAuthDTO.class))
                     .orElseThrow(() -> new RuntimeException("User Not Found"));
             var authorities = user.getRoles().stream()
                     .map(SimpleGrantedAuthority::new)

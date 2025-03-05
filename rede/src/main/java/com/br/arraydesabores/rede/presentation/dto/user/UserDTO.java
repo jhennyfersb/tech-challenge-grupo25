@@ -1,6 +1,6 @@
 package com.br.arraydesabores.rede.presentation.dto.user;
 
-import com.br.arraydesabores.rede.presentation.dto.AddressDTO;
+import com.br.arraydesabores.rede.presentation.dto.address.AddressDTO;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

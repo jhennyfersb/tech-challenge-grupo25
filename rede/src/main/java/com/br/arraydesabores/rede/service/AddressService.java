@@ -6,13 +6,12 @@ import com.br.arraydesabores.rede.domain.model.Address;
 import com.br.arraydesabores.rede.domain.model.User;
 import com.br.arraydesabores.rede.infrastructure.entity.AddressEntity;
 import com.br.arraydesabores.rede.infrastructure.repository.AddressRepository;
-import com.br.arraydesabores.rede.presentation.dto.AddressDTO;
+import com.br.arraydesabores.rede.presentation.dto.address.AddressDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor

@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -33,6 +34,7 @@ public class UserGatewayImpl implements IUserGateway {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<User> findById(Long id) {
         return repository.findById(id)
                 .map(entity -> modelMapper.map(entity, User.class));
@@ -52,8 +54,8 @@ public class UserGatewayImpl implements IUserGateway {
 
     @Override
     public Optional<User> findByUsername(String username) {
-        return repository.findByLogin(username)
-                .map(entity -> modelMapper.map(entity, User.class));
+        var userEntity = repository.findByLogin(username);
+        return userEntity.map(entity -> modelMapper.map(entity, User.class));
     }
 
     @Override

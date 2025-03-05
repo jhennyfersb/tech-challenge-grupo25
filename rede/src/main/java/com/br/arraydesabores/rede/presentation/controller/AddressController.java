@@ -1,40 +1,39 @@
 package com.br.arraydesabores.rede.presentation.controller;
 
-import com.br.arraydesabores.rede.presentation.dto.AddressDTO;
-import com.br.arraydesabores.rede.application.exception.UserNotFoundException;
-import com.br.arraydesabores.rede.service.AddressService;
+import com.br.arraydesabores.rede.application.usecases.address.CreateAddressUseCase;
+import com.br.arraydesabores.rede.application.usecases.address.DeleteAddressUseCase;
+import com.br.arraydesabores.rede.presentation.dto.address.AddressCreateDTO;
+import com.br.arraydesabores.rede.presentation.dto.address.AddressResponseDTO;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/addresses")
+@RequiredArgsConstructor
 public class AddressController {
 
-    private final AddressService addressService;
+    private final ModelMapper modelMapper;
+    private final CreateAddressUseCase createAddressUseCase;
+    private final DeleteAddressUseCase deleteAddressUseCase;
 
-    public AddressController(AddressService addressService) {
-        this.addressService = addressService;
-    }
 
-    @PostMapping("/{userId}")
-    public ResponseEntity<AddressDTO> saveAddress(@PathVariable Long userId,
-                                                  @Valid @RequestBody AddressDTO addressDTO) throws UserNotFoundException {
-        AddressDTO address = addressService.saveAddress(userId, addressDTO);
-        return ResponseEntity.status(201).body(address);
+    @PostMapping
+    public ResponseEntity<AddressResponseDTO> saveAddress(@Valid @RequestBody AddressCreateDTO addressDTO) {
+        var address = createAddressUseCase.execute(addressDTO);
+        return ResponseEntity.status(201).body(modelMapper.map(address, AddressResponseDTO.class));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAdress(@PathVariable Long id) {
-        addressService.deleteAddressById(id);
+    public ResponseEntity<Void> deleteAddress(@PathVariable Long id) {
+        deleteAddressUseCase.execute(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<AddressDTO> updateAdress(@PathVariable Long id,
-                                                   @Valid @RequestBody AddressDTO addressDTO) throws UserNotFoundException {
-        AddressDTO address = addressService.updateAddress(id, addressDTO);
-        return ResponseEntity.status(200).body(address);
     }
 }

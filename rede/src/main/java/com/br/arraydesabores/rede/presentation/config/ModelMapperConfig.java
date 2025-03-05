@@ -11,8 +11,9 @@ public class ModelMapperConfig {
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
-        // Configurando a estratégia de matching STRICT para evitar mapeamentos incorretos
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        modelMapper.getConfiguration()
+                .setMatchingStrategy(MatchingStrategies.STRICT)
+                .setPropertyCondition(context -> !(context.getSource() instanceof org.hibernate.proxy.HibernateProxy));
         return modelMapper;
     }
 }

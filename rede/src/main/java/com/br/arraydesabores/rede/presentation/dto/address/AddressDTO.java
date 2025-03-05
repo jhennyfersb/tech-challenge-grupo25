@@ -1,4 +1,4 @@
-package com.br.arraydesabores.rede.presentation.dto;
+package com.br.arraydesabores.rede.presentation.dto.address;
 
 
 import jakarta.validation.constraints.NotNull;

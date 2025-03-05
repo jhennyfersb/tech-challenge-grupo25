@@ -13,7 +13,8 @@ public class FindUserByIdUseCase {
     private final IUserGateway userRepository;
 
     public User execute(Long id) {
-        return userRepository.findById(id).orElseThrow(
+        var user = userRepository.findById(id).orElseThrow(
                 () -> new UserNotFoundException(id.toString()));
+        return user;
     }
 }
