@@ -1,36 +1,25 @@
-package com.br.arraydesabores.rede.model;
+package app.domain.entity;
 
-
-
-import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
+@EqualsAndHashCode(callSuper = true)
+@Data
 @Builder
-@Table(name = "tb_user")
 public class User extends DomainMain implements Serializable {
 
     private String name;
-
     private String password;
-
     private String email;
-
     private String login;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Address> addresses;
-
-    @ElementCollection(fetch = FetchType.EAGER)
+    private List<Address> addresses = new ArrayList<>();
     private Set<String> roles = new HashSet<>();
 
 }
