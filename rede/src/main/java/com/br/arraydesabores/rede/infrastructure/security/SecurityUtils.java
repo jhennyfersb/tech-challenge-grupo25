@@ -24,4 +24,18 @@ public class SecurityUtils {
         }
     }
 
+    public static UserAuthDTO getCurrentUserAuth() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
+
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserAuthDTO) {
+            return ((UserAuthDTO) principal);
+        } else {
+            return null;
+        }
+    }
+
 }

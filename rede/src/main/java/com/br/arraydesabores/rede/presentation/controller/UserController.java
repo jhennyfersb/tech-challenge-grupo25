@@ -67,13 +67,10 @@ public class UserController {
     }
 
     @PostMapping("/change-password")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<String> changePassword(
-            @Valid @RequestBody ChangePasswordDTO dto,
-            @AuthenticationPrincipal UserDetails userDetails) {
+            @Valid @RequestBody ChangePasswordDTO dto) {
 
-        String username = userDetails.getUsername();
-        updatePasswordUserUseCase.execute(username, dto);
+        updatePasswordUserUseCase.execute(dto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }

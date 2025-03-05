@@ -12,5 +12,6 @@ public class UserAuthDTO {
     String password;
     String email;
     Set<String> roles;
+    Integer version;
 
 }

@@ -1,11 +1,16 @@
 package com.br.arraydesabores.rede.presentation.controller;
 
+import com.br.arraydesabores.rede.application.usecases.auth.AuthenticateUserUseCase;
+import com.br.arraydesabores.rede.application.usecases.auth.CreateUserWithoutTokenUseCase;
 import com.br.arraydesabores.rede.presentation.dto.LoginRequestDTO;
 import com.br.arraydesabores.rede.presentation.dto.RegisterRequestDTO;
 import com.br.arraydesabores.rede.presentation.dto.ResponseDTO;
-import com.br.arraydesabores.rede.service.AuthService;
+import com.br.arraydesabores.rede.presentation.dto.user.UserResponseDTO;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,29 +21,25 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthService authService;
-
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
-
+    private final CreateUserWithoutTokenUseCase createUserWithoutTokenUseCase;
+    private final AuthenticateUserUseCase authenticateUserUseCase;
+    private final ModelMapper modelMapper;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDTO body) {
-        try {
-            ResponseDTO response = authService.authenticateUser(body);
-            return ResponseEntity.ok(response);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<Void> login(@Valid @RequestBody LoginRequestDTO body, HttpServletResponse response) {
+        authenticateUserUseCase.execute(body, response);
+        return ResponseEntity.noContent().build();
+
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseDTO> register(@Valid @RequestBody RegisterRequestDTO body) {
-        String token = authService.registerUser(body);
-        return ResponseEntity.ok(new ResponseDTO(body.getName(), token));
+    public ResponseEntity<UserResponseDTO> register(@Valid @RequestBody RegisterRequestDTO body,
+                                                    HttpServletResponse response) {
+        var user = createUserWithoutTokenUseCase.execute(body, response);
+        return ResponseEntity.ok().body(modelMapper.map(user, UserResponseDTO.class));
     }
 
 }
