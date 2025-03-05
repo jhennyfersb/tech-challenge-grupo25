@@ -1,6 +1,7 @@
 package com.br.arraydesabores.rede.application.interfaces;
 
 import com.br.arraydesabores.rede.domain.model.User;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
