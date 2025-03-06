@@ -14,6 +14,6 @@ public class FindUserByIdUseCase {
 
     public User execute(Long id) {
         return userRepository.findById(id).orElseThrow(
-                () -> new UserNotFoundException(id.toString()));
+                () -> new UserNotFoundException("Usuário não encontrado."));
     }
 }

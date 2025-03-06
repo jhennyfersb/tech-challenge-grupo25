@@ -22,7 +22,7 @@ public class UpdatePasswordUserUseCase {
         var user = SecurityUtils.getCurrentUserAuth();
 
         if (!passwordEncoder.matches(changePasswordDTO.oldPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid old password");
+            throw new IllegalArgumentException("Senha incorreta");
         }
 
         user.setPassword(passwordEncoder.encode(changePasswordDTO.newPassword()));
