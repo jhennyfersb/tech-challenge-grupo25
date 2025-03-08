@@ -1,5 +1,6 @@
 package com.br.arraydesabores.rede.presentation.dto;
 
+import com.br.arraydesabores.rede.presentation.dto.address.AddressCreateDTO;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -18,4 +19,6 @@ public class RegisterRequestDTO {
 
     @NotNull
     private String login;
+
+    private AddressCreateDTO address;
 }

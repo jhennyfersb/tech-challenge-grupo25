@@ -1,9 +1,7 @@
 package com.br.arraydesabores.rede.infrastructure.entity;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -12,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,7 +34,7 @@ public class UserEntity extends BaseMutableEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<AddressEntity> addresses;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> roles = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Set<UserRoleEntity> roles;
 
 }

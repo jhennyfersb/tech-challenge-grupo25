@@ -1,9 +1,12 @@
 package com.br.arraydesabores.rede.infrastructure.gateways;
 
+import com.br.arraydesabores.rede.application.exception.UserNotFoundException;
 import com.br.arraydesabores.rede.application.interfaces.IUserGateway;
 import com.br.arraydesabores.rede.domain.model.User;
 import com.br.arraydesabores.rede.infrastructure.entity.UserEntity;
 import com.br.arraydesabores.rede.infrastructure.repository.UserRepository;
+import com.br.arraydesabores.rede.infrastructure.repository.UserRoleRepository;
+import com.br.arraydesabores.rede.presentation.dto.user.UserListDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -18,6 +21,7 @@ import java.util.Optional;
 public class UserGatewayImpl implements IUserGateway {
 
     private final UserRepository repository;
+    private final UserRoleRepository roleRepository;
     private final ModelMapper modelMapper;
 
     @Override
@@ -28,16 +32,17 @@ public class UserGatewayImpl implements IUserGateway {
     }
 
     @Override
-    public Page<User> findAll(Pageable pageable) {
+    public Page<UserListDTO> findAll(Pageable pageable) {
         Page<UserEntity> userEntities = repository.findAll(pageable);
-        return userEntities.map(entity -> modelMapper.map(entity, User.class));
+        return userEntities.map(entity -> modelMapper.map(entity, UserListDTO.class));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<User> findById(Long id) {
+    public User findById(Long id) {
         return repository.findById(id)
-                .map(entity -> modelMapper.map(entity, User.class));
+                .map((entity) -> modelMapper.map(entity, User.class))
+                .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
     }
 
     @Override
@@ -68,4 +73,5 @@ public class UserGatewayImpl implements IUserGateway {
         return repository.findByEmail(email)
                 .map(entity -> modelMapper.map(entity, User.class));
     }
+
 }

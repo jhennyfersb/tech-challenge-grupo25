@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -17,6 +16,6 @@ public class User extends DomainMain implements Serializable {
     private String email;
     private String login;
     private List<Address> addresses;
-    private Set<String> roles = new HashSet<>();
+    private Set<UserRole> roles;
 
 }

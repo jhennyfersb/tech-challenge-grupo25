@@ -4,8 +4,7 @@ import com.br.arraydesabores.rede.application.usecases.auth.AuthenticateUserUseC
 import com.br.arraydesabores.rede.application.usecases.auth.CreateUserWithoutTokenUseCase;
 import com.br.arraydesabores.rede.presentation.dto.LoginRequestDTO;
 import com.br.arraydesabores.rede.presentation.dto.RegisterRequestDTO;
-import com.br.arraydesabores.rede.presentation.dto.ResponseDTO;
-import com.br.arraydesabores.rede.presentation.dto.user.UserResponseDTO;
+import com.br.arraydesabores.rede.presentation.dto.user.UserResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,10 +35,10 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> register(@Valid @RequestBody RegisterRequestDTO body,
-                                                    HttpServletResponse response) {
+    public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequestDTO body,
+                                                 HttpServletResponse response) {
         var user = createUserWithoutTokenUseCase.execute(body, response);
-        return ResponseEntity.ok().body(modelMapper.map(user, UserResponseDTO.class));
+        return ResponseEntity.ok().body(modelMapper.map(user, UserResponse.class));
     }
 
 }
