@@ -26,6 +26,7 @@ public class UpdatePasswordUserUseCase {
         }
 
         user.setPassword(passwordEncoder.encode(changePasswordDTO.newPassword()));
+        user.setRoles(null);
         userGateway.save(modelMapper.map(user, User.class));
     }
 }
