@@ -28,7 +28,7 @@ import java.util.List;
 @AllArgsConstructor
 public class RestaurantEntity extends BaseMutableEntity {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Embedded

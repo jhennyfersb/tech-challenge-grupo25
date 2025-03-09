@@ -23,16 +23,16 @@ public class MenuItemEntity extends BaseMutableEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, length = 500)
+    @Column(length = 500)
     private String description;
 
     @Column(nullable = false)
     private BigDecimal price;
 
     @Column(nullable = false)
-    private Boolean availableOnlyInRestaurant;
+    private boolean availableOnlyInRestaurant;
 
-    @Column(nullable = false)
+    @Column()
     private String photoPath;
 
     @ManyToOne

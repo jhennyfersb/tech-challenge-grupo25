@@ -1,6 +1,6 @@
-package com.br.arraydesabores.rede.application.usecases.restaurant;
+package com.br.arraydesabores.rede.application.usecases.menuItem;
 
-
+import com.br.arraydesabores.rede.application.interfaces.IMenuItemGateway;
 import com.br.arraydesabores.rede.application.interfaces.IRestaurantGateway;
 import com.br.arraydesabores.rede.application.validator.RestaurantValidator;
 import lombok.RequiredArgsConstructor;
@@ -9,14 +9,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class DeleteRestaurantUseCase {
-
+public class DeleteMenuItemUseCase {
+    private final IMenuItemGateway menuItemGateway;
     private final IRestaurantGateway restaurantGateway;
     private final ModelMapper modelMapper;
 
-    public void execute(Long id) {
-        var restaurant = restaurantGateway.findById(id);
+    public void execute(Long restaurantId, Long id) {
+        var restaurant = restaurantGateway.findById(restaurantId);
         RestaurantValidator.IsOwned(restaurant);
-        restaurantGateway.delete(restaurant);
+
+        var item = menuItemGateway.findById(id);
+        menuItemGateway.deleteById(item.getId());
     }
+
 }

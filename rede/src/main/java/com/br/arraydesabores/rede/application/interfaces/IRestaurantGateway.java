@@ -15,9 +15,10 @@ public interface IRestaurantGateway {
 
     Restaurant save(Restaurant restaurant);
 
-    void deleteById(Long id);
+    void delete(Restaurant restaurant);
 
     List<Restaurant> findByOwner(User owner);
 
+    boolean existsById(Long id);
 
 }

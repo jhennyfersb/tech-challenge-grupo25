@@ -1,17 +1,18 @@
 package com.br.arraydesabores.rede.application.interfaces;
 
+import com.br.arraydesabores.rede.application.criteria.MenuItemCriteria;
 import com.br.arraydesabores.rede.domain.model.MenuItem;
 import com.br.arraydesabores.rede.domain.model.Restaurant;
+import org.springframework.data.domain.Page;
 
-import java.util.List;
 
 public interface IMenuItemGateway {
 
-    List<MenuItem> findAllByRestaurant(Restaurant restaurant);
+    Page<MenuItem> findAllByRestaurantId(MenuItemCriteria criteria);
 
     MenuItem findById(Long id);
 
-    MenuItem save(MenuItem menuItem);
+    MenuItem save(Restaurant restaurant, MenuItem menuItem);
 
     void deleteById(Long id);
 

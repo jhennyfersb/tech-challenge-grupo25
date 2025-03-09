@@ -12,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -45,8 +47,9 @@ public class RestaurantGatewayImpl implements IRestaurantGateway {
     }
 
     @Override
-    public void deleteById(Long id) {
-        restaurantRepository.deleteById(id);
+    @Transactional
+    public void delete(Restaurant restaurant) {
+        restaurantRepository.deleteById(restaurant.getId());
     }
 
     @Override
@@ -55,5 +58,10 @@ public class RestaurantGatewayImpl implements IRestaurantGateway {
                 .stream()
                 .map(entity -> modelMapper.map(entity, Restaurant.class))
                 .toList();
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return restaurantRepository.existsById(id);
     }
 }
