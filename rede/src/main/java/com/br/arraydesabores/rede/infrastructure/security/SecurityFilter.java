@@ -57,10 +57,8 @@ public class SecurityFilter extends OncePerRequestFilter {
                     .map(entity -> modelMapper.map(entity, UserAuthDTO.class))
                     .orElseThrow(() -> new RuntimeException("User Not Found"));
 
-            logger.info("Usuário autenticado: " + user.getEmail());
-
             var authorities = user.getRoles().stream()
-                    .map(SimpleGrantedAuthority::new)
+                    .map(role -> new SimpleGrantedAuthority(role.getRole().toString()))
                     .collect(Collectors.toList());
             var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);

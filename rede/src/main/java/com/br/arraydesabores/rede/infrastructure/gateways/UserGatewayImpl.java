@@ -2,10 +2,10 @@ package com.br.arraydesabores.rede.infrastructure.gateways;
 
 import com.br.arraydesabores.rede.application.exception.UserNotFoundException;
 import com.br.arraydesabores.rede.application.interfaces.IUserGateway;
+import com.br.arraydesabores.rede.domain.enums.UserRoleType;
 import com.br.arraydesabores.rede.domain.model.User;
 import com.br.arraydesabores.rede.infrastructure.entity.UserEntity;
 import com.br.arraydesabores.rede.infrastructure.repository.UserRepository;
-import com.br.arraydesabores.rede.infrastructure.repository.UserRoleRepository;
 import com.br.arraydesabores.rede.presentation.dto.user.UserListDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -21,7 +21,6 @@ import java.util.Optional;
 public class UserGatewayImpl implements IUserGateway {
 
     private final UserRepository repository;
-    private final UserRoleRepository roleRepository;
     private final ModelMapper modelMapper;
 
     @Override
@@ -29,6 +28,13 @@ public class UserGatewayImpl implements IUserGateway {
         UserEntity userEntity = modelMapper.map(user, UserEntity.class);
         userEntity = repository.save(userEntity);
         return modelMapper.map(userEntity, User.class);
+    }
+
+    @Override
+    public User createConsumer(User user) {
+        UserEntity userEntity = modelMapper.map(user, UserEntity.class);
+        userEntity.addRole(UserRoleType.CONSUMER);
+        return modelMapper.map(repository.save(userEntity), User.class);
     }
 
     @Override

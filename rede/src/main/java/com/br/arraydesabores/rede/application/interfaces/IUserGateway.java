@@ -1,14 +1,11 @@
 package com.br.arraydesabores.rede.application.interfaces;
 
-import com.br.arraydesabores.rede.domain.enums.UserRoleEnum;
 import com.br.arraydesabores.rede.domain.model.User;
-import com.br.arraydesabores.rede.domain.model.UserRole;
 import com.br.arraydesabores.rede.presentation.dto.user.UserListDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
-import java.util.Set;
 
 public interface IUserGateway {
     public User save(User user);
@@ -26,5 +23,7 @@ public interface IUserGateway {
     boolean existsByEmail(String email);
 
     Optional<User> findByEmail(String email);
+
+    User createConsumer(User user);
 
 }

@@ -1,16 +1,12 @@
-package com.br.arraydesabores.rede.domain.model;
+package com.br.arraydesabores.rede.presentation.dto.userRole;
 
 import com.br.arraydesabores.rede.domain.enums.UserRoleType;
+import com.br.arraydesabores.rede.domain.model.DomainMain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
-@RequiredArgsConstructor
-public class UserRole extends DomainMain {
-
+public class UserRoleDTO extends DomainMain {
     private UserRoleType role;
-    private User user;
-
 }

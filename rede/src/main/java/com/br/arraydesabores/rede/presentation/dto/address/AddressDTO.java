@@ -21,9 +21,4 @@ public class AddressDTO {
     Integer number;
     @NotNull
     String city;
-    String complement;
-    String state;
-    String country;
-    String zipcode;
-    Long userId;
 }

@@ -2,7 +2,9 @@ package com.br.arraydesabores.rede.infrastructure.gateways;
 
 import com.br.arraydesabores.rede.application.interfaces.IAddressGateway;
 import com.br.arraydesabores.rede.domain.model.Address;
+import com.br.arraydesabores.rede.domain.model.User;
 import com.br.arraydesabores.rede.infrastructure.entity.AddressEntity;
+import com.br.arraydesabores.rede.infrastructure.entity.UserEntity;
 import com.br.arraydesabores.rede.infrastructure.repository.AddressRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -17,8 +19,10 @@ public class AddressGatewayImpl implements IAddressGateway {
 
 
     @Override
-    public Address save(Address address) {
-        var addressSaved = repository.save(modelMapper.map(address, AddressEntity.class));
+    public Address save(User user, Address address) {
+        var entity = modelMapper.map(address, AddressEntity.class);
+        entity.setUser(modelMapper.map(user, UserEntity.class));
+        var addressSaved = repository.save(entity);
         return modelMapper.map(addressSaved, Address.class);
     }
 

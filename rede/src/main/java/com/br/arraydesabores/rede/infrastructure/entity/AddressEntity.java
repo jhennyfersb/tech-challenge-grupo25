@@ -1,6 +1,5 @@
 package com.br.arraydesabores.rede.infrastructure.entity;
 
-import com.br.arraydesabores.rede.presentation.dto.address.AddressDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -10,7 +9,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 @Getter
 @Setter

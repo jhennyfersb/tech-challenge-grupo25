@@ -1,21 +1,22 @@
 package com.br.arraydesabores.rede.domain.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-public class User extends DomainMain implements Serializable {
+@Getter
+@Setter
+public class User extends DomainMain {
 
     private String name;
     private String password;
     private String email;
     private String login;
     private List<Address> addresses;
-    private Set<UserRole> roles;
+    private Set<UserRole> roles = new HashSet<>();
+    private List<Restaurant> restaurants;
 
 }

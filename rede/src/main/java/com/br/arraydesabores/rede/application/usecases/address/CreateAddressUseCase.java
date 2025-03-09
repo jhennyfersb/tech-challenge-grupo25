@@ -22,7 +22,6 @@ public class CreateAddressUseCase {
         var user = userGateway.findByUsername(username).orElse(null);
 
         var address = modelMapper.map(addressRequest, Address.class);
-        address.setUser(user);
-        return addressGateway.save(address);
+        return addressGateway.save(user, address);
     }
 }

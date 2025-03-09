@@ -1,6 +1,6 @@
 package com.br.arraydesabores.rede.infrastructure.entity;
 
-import com.br.arraydesabores.rede.domain.enums.UserRoleEnum;
+import com.br.arraydesabores.rede.domain.enums.UserRoleType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,14 +16,17 @@ import lombok.Setter;
 @Setter
 @Entity(name = "tb_user_role")
 @RequiredArgsConstructor
-@AllArgsConstructor
 public class UserRoleEntity extends BaseImmutableEntity {
 
     @Enumerated(EnumType.STRING)
-    private UserRoleEnum role;
+    private UserRoleType role;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnore
     private UserEntity user;
+
+    public UserRoleEntity(UserRoleType role) {
+        super();
+        this.role = role;
+    }
 }

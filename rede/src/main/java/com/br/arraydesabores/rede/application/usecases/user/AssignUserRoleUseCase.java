@@ -7,6 +7,7 @@ import com.br.arraydesabores.rede.presentation.dto.user.UserRoleAssignRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -18,7 +19,7 @@ public class AssignUserRoleUseCase {
     public void execute(UserRoleAssignRequest request) {
         var user = userGateway.findById(request.getUserId());
 
-        Set<UserRole> existingRoles = user.getRoles();
+        Set<UserRole> existingRoles = Objects.nonNull(user.getRoles()) ? user.getRoles() : Set.of();
 
         request.getRoles().removeAll(existingRoles);
         if (request.getRoles().isEmpty()) return;

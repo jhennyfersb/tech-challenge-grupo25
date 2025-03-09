@@ -1,5 +1,6 @@
 package com.br.arraydesabores.rede.presentation.dto.user;
 
+import com.br.arraydesabores.rede.presentation.dto.userRole.UserRoleDTO;
 import lombok.Data;
 
 import java.util.Set;
@@ -11,7 +12,7 @@ public class UserAuthDTO {
     String login;
     String password;
     String email;
-    Set<String> roles;
+    Set<UserRoleDTO> roles;
     Integer version;
 
 }
