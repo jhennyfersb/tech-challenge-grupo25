@@ -1,6 +1,5 @@
 package com.br.arraydesabores.rede.application.usecases.user;
 
-import com.br.arraydesabores.rede.application.exception.UserNotFoundException;
 import com.br.arraydesabores.rede.application.interfaces.IUserGateway;
 import com.br.arraydesabores.rede.domain.model.User;
 import com.br.arraydesabores.rede.infrastructure.security.SecurityUtils;

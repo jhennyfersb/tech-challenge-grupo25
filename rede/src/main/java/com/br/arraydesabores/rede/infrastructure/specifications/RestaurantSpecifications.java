@@ -1,4 +1,4 @@
-package com.br.arraydesabores.rede.application.specifications;
+package com.br.arraydesabores.rede.infrastructure.specifications;
 
 import com.br.arraydesabores.rede.application.criteria.RestaurantCriteria;
 import com.br.arraydesabores.rede.domain.enums.CuisineType;

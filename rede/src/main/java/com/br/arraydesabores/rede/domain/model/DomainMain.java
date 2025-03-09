@@ -11,4 +11,13 @@ public abstract class DomainMain implements Serializable {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Integer version;
+
+    public DomainMain(Long id) {
+        this.createdAt = LocalDateTime.now();
+        this.id = id;
+    }
+
+    public DomainMain() {
+        this.createdAt = LocalDateTime.now();
+    }
 }

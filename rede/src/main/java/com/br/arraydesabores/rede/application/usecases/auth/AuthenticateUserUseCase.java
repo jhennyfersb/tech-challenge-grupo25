@@ -2,12 +2,11 @@ package com.br.arraydesabores.rede.application.usecases.auth;
 
 import com.br.arraydesabores.rede.application.interfaces.IUserGateway;
 import com.br.arraydesabores.rede.domain.model.User;
-import com.br.arraydesabores.rede.infrastructure.security.TokenService;
+import com.br.arraydesabores.rede.infrastructure.service.TokenService;
 import com.br.arraydesabores.rede.presentation.dto.LoginRequestDTO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

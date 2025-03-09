@@ -18,8 +18,8 @@ public class CreateAddressUseCase {
     private final IUserGateway userGateway;
 
     public Address execute(AddressCreateDTO addressRequest) {
-        var username = SecurityUtils.getCurrentUsername();
-        var user = userGateway.findByUsername(username).orElse(null);
+        var userAuth = SecurityUtils.getCurrentUserAuth();
+        var user = userGateway.findByUsername(userAuth.getLogin()).orElse(null);
 
         var address = modelMapper.map(addressRequest, Address.class);
         return addressGateway.save(user, address);

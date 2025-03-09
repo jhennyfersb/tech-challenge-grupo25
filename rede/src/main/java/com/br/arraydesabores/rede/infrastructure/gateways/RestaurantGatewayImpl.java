@@ -3,7 +3,7 @@ package com.br.arraydesabores.rede.infrastructure.gateways;
 import com.br.arraydesabores.rede.application.criteria.RestaurantCriteria;
 import com.br.arraydesabores.rede.application.exception.RestaurantNotFoundException;
 import com.br.arraydesabores.rede.application.interfaces.IRestaurantGateway;
-import com.br.arraydesabores.rede.application.specifications.RestaurantSpecifications;
+import com.br.arraydesabores.rede.infrastructure.specifications.RestaurantSpecifications;
 import com.br.arraydesabores.rede.domain.model.Restaurant;
 import com.br.arraydesabores.rede.domain.model.User;
 import com.br.arraydesabores.rede.infrastructure.entity.RestaurantEntity;

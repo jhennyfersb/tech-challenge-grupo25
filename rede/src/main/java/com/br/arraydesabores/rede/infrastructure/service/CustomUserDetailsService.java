@@ -1,4 +1,4 @@
-package com.br.arraydesabores.rede.infrastructure.security;
+package com.br.arraydesabores.rede.infrastructure.service;
 
 import com.br.arraydesabores.rede.domain.model.User;
 import com.br.arraydesabores.rede.infrastructure.repository.UserRepository;

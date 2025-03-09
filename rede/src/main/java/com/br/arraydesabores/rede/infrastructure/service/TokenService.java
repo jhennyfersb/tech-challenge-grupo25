@@ -1,4 +1,4 @@
-package com.br.arraydesabores.rede.infrastructure.security;
+package com.br.arraydesabores.rede.infrastructure.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

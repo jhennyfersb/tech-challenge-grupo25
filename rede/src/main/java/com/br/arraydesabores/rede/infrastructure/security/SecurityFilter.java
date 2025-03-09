@@ -1,6 +1,8 @@
 package com.br.arraydesabores.rede.infrastructure.security;
 
+import com.br.arraydesabores.rede.application.exception.ForbiddenException;
 import com.br.arraydesabores.rede.infrastructure.repository.UserRepository;
+import com.br.arraydesabores.rede.infrastructure.service.TokenService;
 import com.br.arraydesabores.rede.presentation.dto.user.UserAuthDTO;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -33,29 +35,24 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        logger.info("Filtrando requisição para: " + request.getRequestURI());
 
         try {
             var token = this.recoverToken(request);
 
             if (token == null) {
-                logger.warn("Token não encontrado na requisição para: " + request.getRequestURI());
-                filterChain.doFilter(request, response); // Passar para o próximo filtro sem autenticação
+                filterChain.doFilter(request, response);
                 return;
             }
 
-            logger.info("Token encontrado, validando...");
-
             var login = tokenService.validateToken(token);
             if (login == null) {
-                logger.warn("Token inválido ou expirado para: " + request.getRequestURI());
-                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Token inválido ou expirado");
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Usuário não autenticado");
                 return;
             }
 
             UserAuthDTO user = userRepository.findByEmail(login)
                     .map(entity -> modelMapper.map(entity, UserAuthDTO.class))
-                    .orElseThrow(() -> new RuntimeException("User Not Found"));
+                    .orElseThrow(() -> new ForbiddenException("Usuário não autenticado"));
 
             var authorities = user.getRoles().stream()
                     .map(role -> new SimpleGrantedAuthority(role.getRole().toString()))

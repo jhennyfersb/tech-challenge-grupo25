@@ -13,4 +13,8 @@ public class UserRole extends DomainMain {
     private UserRoleType role;
     private User user;
 
+    public UserRole(Long id, UserRoleType role) {
+        super(id);
+        this.role = role;
+    }
 }

@@ -3,7 +3,7 @@ package com.br.arraydesabores.rede.application.usecases.auth;
 import com.br.arraydesabores.rede.application.interfaces.IUserGateway;
 import com.br.arraydesabores.rede.application.usecases.user.CreateUserUseCase;
 import com.br.arraydesabores.rede.domain.model.User;
-import com.br.arraydesabores.rede.infrastructure.security.TokenService;
+import com.br.arraydesabores.rede.infrastructure.service.TokenService;
 import com.br.arraydesabores.rede.presentation.dto.RegisterRequestDTO;
 import com.br.arraydesabores.rede.presentation.dto.user.UserCreateDTO;
 import jakarta.servlet.http.Cookie;

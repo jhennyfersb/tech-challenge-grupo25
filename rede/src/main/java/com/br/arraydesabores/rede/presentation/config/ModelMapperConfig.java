@@ -56,13 +56,7 @@ public class ModelMapperConfig {
                         if (source == null) return null;
 
                         return source.stream()
-                                .map(roleEntity -> {
-                                    UserRole role = new UserRole();
-                                    role.setId(roleEntity.getId());
-                                    role.setRole(roleEntity.getRole());
-                                    // Não definimos a referência de volta ao user
-                                    return role;
-                                })
+                                .map(roleEntity -> new UserRole(roleEntity.getId(), roleEntity.getRole()))
                                 .collect(Collectors.toSet());
                     }).map(UserEntity::getRoles, User::setRoles);
                 });
