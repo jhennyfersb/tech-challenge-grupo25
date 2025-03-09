@@ -4,7 +4,7 @@ import com.br.arraydesabores.rede.application.exception.ForbiddenException;
 import com.br.arraydesabores.rede.domain.model.Restaurant;
 import com.br.arraydesabores.rede.infrastructure.security.SecurityUtils;
 
-public class RestaurantValidator {
+public class RestaurantOwnershipValidator {
 
     public static void IsOwned(Restaurant restaurant) {
         var user = SecurityUtils.getCurrentUserAuth();

@@ -2,7 +2,7 @@ package com.br.arraydesabores.rede.application.usecases.restaurant;
 
 
 import com.br.arraydesabores.rede.application.interfaces.IRestaurantGateway;
-import com.br.arraydesabores.rede.application.validator.RestaurantValidator;
+import com.br.arraydesabores.rede.application.validator.RestaurantOwnershipValidator;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ public class DeleteRestaurantUseCase {
 
     public void execute(Long id) {
         var restaurant = restaurantGateway.findById(id);
-        RestaurantValidator.IsOwned(restaurant);
+        RestaurantOwnershipValidator.IsOwned(restaurant);
         restaurantGateway.delete(restaurant);
     }
 }

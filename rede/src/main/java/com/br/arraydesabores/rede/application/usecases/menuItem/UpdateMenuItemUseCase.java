@@ -2,9 +2,8 @@ package com.br.arraydesabores.rede.application.usecases.menuItem;
 
 import com.br.arraydesabores.rede.application.interfaces.IMenuItemGateway;
 import com.br.arraydesabores.rede.application.interfaces.IRestaurantGateway;
-import com.br.arraydesabores.rede.application.validator.RestaurantValidator;
+import com.br.arraydesabores.rede.application.validator.RestaurantOwnershipValidator;
 import com.br.arraydesabores.rede.domain.model.MenuItem;
-import com.br.arraydesabores.rede.presentation.dto.menuItem.MenuItemCreateRequest;
 import com.br.arraydesabores.rede.presentation.dto.menuItem.MenuItemUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -19,7 +18,7 @@ public class UpdateMenuItemUseCase {
 
     public MenuItem execute(Long restaurantId, Long id, MenuItemUpdateRequest input) {
         var restaurant = restaurantGateway.findById(restaurantId);
-        RestaurantValidator.IsOwned(restaurant);
+        RestaurantOwnershipValidator.IsOwned(restaurant);
 
         var item = menuItemGateway.findById(id);
         modelMapper.map(input, item);

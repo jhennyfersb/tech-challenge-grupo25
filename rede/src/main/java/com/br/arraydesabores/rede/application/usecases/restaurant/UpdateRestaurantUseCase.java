@@ -2,7 +2,7 @@ package com.br.arraydesabores.rede.application.usecases.restaurant;
 
 
 import com.br.arraydesabores.rede.application.interfaces.IRestaurantGateway;
-import com.br.arraydesabores.rede.application.validator.RestaurantValidator;
+import com.br.arraydesabores.rede.application.validator.RestaurantOwnershipValidator;
 import com.br.arraydesabores.rede.domain.model.Restaurant;
 import com.br.arraydesabores.rede.presentation.dto.restaurant.RestaurantUpdateRequest;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class UpdateRestaurantUseCase {
 
     public Restaurant execute(Long id, RestaurantUpdateRequest input) {
         var restaurant = restaurantGateway.findById(id);
-        RestaurantValidator.IsOwned(restaurant);
+        RestaurantOwnershipValidator.IsOwned(restaurant);
 
         modelMapper.map(input, restaurant);
 
