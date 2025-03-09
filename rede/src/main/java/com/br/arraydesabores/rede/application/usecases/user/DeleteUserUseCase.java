@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DeleteUserUseCase {
 
-    private final IUserGateway userRepository;
+    private final IUserGateway userGateway;
     private final FindUserByIdUseCase findUserByIdUseCase;
 
     public void execute(Long id) {
         User userBase = findUserByIdUseCase.execute(id);
-        userRepository.deleteById(userBase.getId());
+        userGateway.deleteById(userBase.getId());
     }
 }

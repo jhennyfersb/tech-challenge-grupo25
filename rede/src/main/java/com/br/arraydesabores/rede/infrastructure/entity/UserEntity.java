@@ -2,6 +2,7 @@ package com.br.arraydesabores.rede.infrastructure.entity;
 
 import com.br.arraydesabores.rede.domain.enums.UserRoleType;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -29,8 +30,10 @@ public class UserEntity extends BaseMutableEntity {
 
     private String password;
 
+    @Column(unique = true)
     private String email;
 
+    @Column(unique = true)
     private String login;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")

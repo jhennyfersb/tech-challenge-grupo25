@@ -1,6 +1,5 @@
 package com.br.arraydesabores.rede.application.usecases.user;
 
-import com.br.arraydesabores.rede.application.exception.UserNotFoundException;
 import com.br.arraydesabores.rede.application.interfaces.IUserGateway;
 import com.br.arraydesabores.rede.domain.model.User;
 import lombok.RequiredArgsConstructor;
@@ -10,9 +9,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FindUserByIdUseCase {
 
-    private final IUserGateway userRepository;
+    private final IUserGateway userGateway;
 
     public User execute(Long id) {
-        return userRepository.findById(id);
+        return userGateway.findById(id);
     }
 }

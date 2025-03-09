@@ -1,5 +1,6 @@
 package com.br.arraydesabores.rede.infrastructure.gateways;
 
+import com.br.arraydesabores.rede.application.exception.AddressNotFoundException;
 import com.br.arraydesabores.rede.application.interfaces.IAddressGateway;
 import com.br.arraydesabores.rede.domain.model.Address;
 import com.br.arraydesabores.rede.domain.model.User;
@@ -24,6 +25,13 @@ public class AddressGatewayImpl implements IAddressGateway {
         entity.setUser(modelMapper.map(user, UserEntity.class));
         var addressSaved = repository.save(entity);
         return modelMapper.map(addressSaved, Address.class);
+    }
+
+    @Override
+    public Address findByIdAndUserId(Long id, Long userId) {
+        return repository.findByIdAndUserId(id, userId)
+                .map(entity -> modelMapper.map(entity, Address.class))
+                .orElseThrow(() -> new AddressNotFoundException("Endereço não encontrado"));
     }
 
     @Override

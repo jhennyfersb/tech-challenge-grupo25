@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 public class UpdateUserUseCase {
 
     private final ModelMapper modelMapper;
-    private final IUserGateway userRepository;
+    private final IUserGateway userGateway;
     private final FindUserByIdUseCase findUserByIdUseCase;
 
     public User execute(Long id, UserUpdateDTO userRequest) {
         User userBase = findUserByIdUseCase.execute(id);
         modelMapper.map(userRequest, userBase);
-        return userRepository.update(userBase);
+        return userGateway.update(userBase);
     }
 }

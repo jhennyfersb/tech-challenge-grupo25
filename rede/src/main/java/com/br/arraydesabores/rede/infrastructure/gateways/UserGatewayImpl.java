@@ -14,8 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class UserGatewayImpl implements IUserGateway {
@@ -64,20 +62,15 @@ public class UserGatewayImpl implements IUserGateway {
     }
 
     @Override
-    public Optional<User> findByUsername(String username) {
-        var userEntity = repository.findByLogin(username);
-        return userEntity.map(entity -> modelMapper.map(entity, User.class));
-    }
-
-    @Override
     public boolean existsByEmail(String email) {
         return repository.existsByEmail(email);
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
+    public User findByEmail(String email) {
         return repository.findByEmail(email)
-                .map(entity -> modelMapper.map(entity, User.class));
+                .map(entity -> modelMapper.map(entity, User.class))
+                .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
     }
 
 }

@@ -1,5 +1,6 @@
 package com.br.arraydesabores.rede.application.usecases.auth;
 
+import com.br.arraydesabores.rede.application.exception.UserNotFoundException;
 import com.br.arraydesabores.rede.application.interfaces.IUserGateway;
 import com.br.arraydesabores.rede.domain.model.User;
 import com.br.arraydesabores.rede.infrastructure.service.TokenService;
@@ -20,8 +21,7 @@ public class AuthenticateUserUseCase {
 
 
     public void execute(LoginRequestDTO body, HttpServletResponse response) {
-        User user = userGateway.findByEmail(body.email())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
+        User user = getUserByEmail(body.email());
 
         if (!passwordEncoder.matches(body.password(), user.getPassword())) {
             throw new IllegalArgumentException("Invalid credentials");
@@ -36,6 +36,14 @@ public class AuthenticateUserUseCase {
         cookie.setMaxAge(60 * 60 * 24 * 7);
 
         response.addCookie(cookie);
+    }
+
+    private User getUserByEmail(String email) {
+        try {
+            return userGateway.findByEmail(email);
+        } catch (UserNotFoundException e) {
+            throw new IllegalArgumentException("Dados inválidos");
+        }
     }
 
 }

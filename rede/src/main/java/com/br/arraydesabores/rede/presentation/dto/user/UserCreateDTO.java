@@ -14,16 +14,16 @@ import java.util.Set;
 @Data
 public class UserCreateDTO {
 
-    @NotNull
+    @NotNull(message = "Nome é obrigatório")
     private String name;
 
-    @Email
+    @Email(message = "Email inválido")
     private String email;
 
-    @Size(min = 6, max = 20)
+    @Size(min = 6, max = 20, message = "Senha deve ter entre 6 e 20 caracteres")
     private String password;
 
-    @NotNull
+    @NotNull(message = "Login é obrigatório")
     private String login;
 
     private List<Address> addresses = new ArrayList<>();

@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FindAllUsersUseCase {
 
-    private final IUserGateway userRepository;
+    private final IUserGateway userGateway;
 
     public Page<UserListDTO> execute(Pageable pageable) {
-        return userRepository.findAll(pageable);
+        return userGateway.findAll(pageable);
     }
 }
