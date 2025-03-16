@@ -28,8 +28,7 @@ public class RestaurantGatewayImpl implements IRestaurantGateway {
 
     @Override
     public Page<Restaurant> findAll(RestaurantCriteria criteria) {
-        var pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
-        return restaurantRepository.findAll(RestaurantSpecifications.where(criteria), pageable)
+        return restaurantRepository.findAll(RestaurantSpecifications.where(criteria), criteria.getPageable())
                 .map(item -> modelMapper.map(item, Restaurant.class));
     }
 
