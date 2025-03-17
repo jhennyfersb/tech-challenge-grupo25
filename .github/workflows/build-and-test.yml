@@ -33,9 +33,11 @@ jobs:
 
       - name: Install Dependencies
         run: mvn clean install -DskipTests
+        working-directory: .
 
       - name: Run Tests
         run: mvn test
+        working-directory: .
 
   build:
     name: Build Application
