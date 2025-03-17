@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '21'
-          distribution: 'openjdk'
+          distribution: 'oracle'
 
       - name: Cache Maven Dependencies
         uses: actions/cache@v3
@@ -50,7 +50,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '21'
-          distribution: 'openjdk'
+          distribution: 'oracle'
 
       - name: Cache Maven Dependencies
         uses: actions/cache@v3
