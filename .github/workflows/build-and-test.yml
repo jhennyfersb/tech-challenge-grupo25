@@ -33,11 +33,11 @@ jobs:
 
       - name: Install Dependencies
         run: mvn clean install -DskipTests
-        working-directory: .
+        working-directory: /rede
 
       - name: Run Tests
         run: mvn test
-        working-directory: .
+        working-directory: /rede
 
   build:
     name: Build Application
