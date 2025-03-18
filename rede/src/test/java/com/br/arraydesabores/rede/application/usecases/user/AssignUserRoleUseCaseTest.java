@@ -17,7 +17,6 @@ import org.mockito.MockitoAnnotations;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -48,29 +47,56 @@ class AssignUserRoleUseCaseTest {
     @Test
     @DisplayName("Deve atribuir uma role para um usuário com sucesso")
     public void shouldAssignRoleToUserSuccessfully() {
-        // Arrange
-        UserRoleAssignRequest request = new UserRoleAssignRequest();
-        request.setUserId(1L);
-        var roleAdmin = new UserRole();
-        roleAdmin.setRole(UserRoleType.ADMIN);
-        var roles = new HashSet<UserRole>();
-        roles.add(roleAdmin);
-        request.setRoles(roles);
+        Long userId = 1L;
+        UserRole roleAdmin = new UserRole(1L, UserRoleType.ADMIN);
+        UserRole roleUser = new UserRole(2L, UserRoleType.USER);
 
         User user = new User();
-        user.setId(1L);
-        user.setRoles(Set.of(roleAdmin));
+        user.setId(userId);
+        var userRoles = new HashSet<UserRole>();
+        userRoles.add(roleAdmin);
+        user.setRoles(userRoles);
 
-        roleAdmin.setUser(user);
+        UserRoleAssignRequest request = new UserRoleAssignRequest();
+        request.setUserId(userId);
+        var setRoles = new HashSet<UserRole>();
+        setRoles.add(roleUser);
+        setRoles.add(roleAdmin);
+        request.setRoles(setRoles);
 
-        when(userGateway.findById(1L)).thenReturn(user);
-        doNothing().when(userRoleGateway).addRoles(user, roles);
+        when(userGateway.findById(userId)).thenReturn(user);
 
-        // Act
         assignUserRoleUseCase.execute(request);
 
-        // Assert
-        verify(userRoleGateway, times(0)).addRoles(user, roles);
+        verify(userGateway, times(1)).findById(userId);
+        verify(userRoleGateway, times(1)).addRoles(user, Set.of(roleUser));
+
+    }
+
+    @Test
+    @DisplayName("Deve encerrar o metodo quando não houver novas roles para atribuir")
+    public void shouldEndMethodWhenThereAreNoNewRolesToAssign() {
+        Long userId = 1L;
+        UserRole roleAdmin = new UserRole(1L, UserRoleType.ADMIN);
+
+        User user = new User();
+        user.setId(userId);
+        var userRoles = new HashSet<UserRole>();
+        userRoles.add(roleAdmin);
+        user.setRoles(userRoles);
+
+        UserRoleAssignRequest request = new UserRoleAssignRequest();
+        request.setUserId(userId);
+        var setRoles = new HashSet<UserRole>();
+        setRoles.add(roleAdmin);
+        request.setRoles(setRoles);
+
+        when(userGateway.findById(userId)).thenReturn(user);
+
+        assignUserRoleUseCase.execute(request);
+
+        verify(userGateway, times(1)).findById(userId);
+        verify(userRoleGateway, times(0)).addRoles(user, setRoles);
     }
 
 }

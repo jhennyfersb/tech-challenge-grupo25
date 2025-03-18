@@ -1,15 +1,16 @@
 package com.br.arraydesabores.rede.infrastructure.gateways;
 
 import com.br.arraydesabores.rede.application.criteria.MenuItemCriteria;
+import com.br.arraydesabores.rede.application.exception.MenuItemNotFoundException;
 import com.br.arraydesabores.rede.domain.model.MenuItem;
 import com.br.arraydesabores.rede.domain.model.Restaurant;
 import com.br.arraydesabores.rede.infrastructure.entity.MenuItemEntity;
 import com.br.arraydesabores.rede.infrastructure.entity.RestaurantEntity;
 import com.br.arraydesabores.rede.infrastructure.repository.MenuItemRepository;
 import com.br.arraydesabores.rede.infrastructure.specifications.MenuItemSpecifications;
-import jdk.jfr.Description;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.PageImpl;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -49,7 +51,7 @@ class MenuItemGatewayImplTest {
     }
 
     @Test
-    @Description("Deve retornar os itens do menu de um restaurante")
+    @DisplayName("Deve retornar os itens do menu de um restaurante")
     void shouldReturnMenuItemsFromRestaurant() {
         var criteria = new MenuItemCriteria();
         var menuItemEntity = new MenuItemEntity();
@@ -65,7 +67,7 @@ class MenuItemGatewayImplTest {
     }
 
     @Test
-    @Description("Deve retornar um item do menu pelo id")
+    @DisplayName("Deve retornar um item do menu pelo id")
     void shouldReturnMenuItemById() {
         var menuItemEntity = new MenuItemEntity();
         var menuItem = new MenuItem();
@@ -81,7 +83,15 @@ class MenuItemGatewayImplTest {
     }
 
     @Test
-    @Description("Deve salvar um item do menu")
+    @DisplayName("Deve retornar uma exceção ao buscar um item do menu pelo id")
+    void shouldReturnExceptionWhenMenuItemNotFound() {
+        when(menuItemRepository.findById(1L)).thenReturn(java.util.Optional.empty());
+
+        assertThrows(MenuItemNotFoundException.class, () -> menuItemGateway.findById(1L));
+    }
+
+    @Test
+    @DisplayName("Deve salvar um item do menu")
     void shouldSaveMenuItem() {
         var menuItemEntity = new MenuItemEntity();
         var menuItem = new MenuItem();
@@ -98,7 +108,7 @@ class MenuItemGatewayImplTest {
     }
 
     @Test
-    @Description("Deve deletar um item do menu pelo id")
+    @DisplayName("Deve deletar um item do menu pelo id")
     void shouldDeleteMenuItemById() {
         doNothing().when(menuItemRepository).deleteById(1L);
 

@@ -8,9 +8,9 @@ import com.br.arraydesabores.rede.infrastructure.entity.RestaurantEntity;
 import com.br.arraydesabores.rede.infrastructure.entity.UserEntity;
 import com.br.arraydesabores.rede.infrastructure.repository.RestaurantRepository;
 import com.br.arraydesabores.rede.infrastructure.specifications.RestaurantSpecifications;
-import jdk.jfr.Description;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -53,7 +53,7 @@ class RestaurantGatewayImplTest {
     }
 
     @Test
-    @Description("Deve retornar todos os restaurantes")
+    @DisplayName("Deve retornar todos os restaurantes")
     void shouldReturnAllRestaurants() {
         var restaurant = new Restaurant();
         var criteria = new RestaurantCriteria();
@@ -69,7 +69,7 @@ class RestaurantGatewayImplTest {
     }
 
     @Test
-    @Description("Deve retornar um restaurante pelo id")
+    @DisplayName("Deve retornar um restaurante pelo id")
     void shouldReturnRestaurantById() {
         var restaurant = new Restaurant();
         var restaurantEntity = new RestaurantEntity();
@@ -82,7 +82,7 @@ class RestaurantGatewayImplTest {
     }
 
     @Test
-    @Description("Deve retornar uma exception ao buscar um restaurante pelo id")
+    @DisplayName("Deve retornar uma exception ao buscar um restaurante pelo id")
     void shouldReturnExceptionWhenRestaurantNotFound() {
         when(restaurantRepository.findById(1L)).thenReturn(java.util.Optional.empty());
 
@@ -91,7 +91,7 @@ class RestaurantGatewayImplTest {
     }
 
     @Test
-    @Description("Deve salvar um restaurante")
+    @DisplayName("Deve salvar um restaurante")
     void shouldSaveRestaurant() {
         var restaurant = new Restaurant();
         var restaurantEntity = new RestaurantEntity();
@@ -105,7 +105,7 @@ class RestaurantGatewayImplTest {
     }
 
     @Test
-    @Description("Deve deletar um restaurante")
+    @DisplayName("Deve deletar um restaurante")
     void shouldDeleteRestaurant() {
         var restaurant = new Restaurant();
         restaurant.setId(1L);
@@ -118,7 +118,7 @@ class RestaurantGatewayImplTest {
     }
 
     @Test
-    @Description("Deve retornar todos os restaurantes de um dono")
+    @DisplayName("Deve retornar todos os restaurantes de um dono")
     void shouldReturnAllRestaurantsByOwner() {
         var restaurant = new Restaurant();
         var owner = new UserEntity();
@@ -137,7 +137,7 @@ class RestaurantGatewayImplTest {
     }
 
     @Test
-    @Description("Deve verificar se um restaurante existe")
+    @DisplayName("Deve verificar se um restaurante existe")
     void shouldCheckIfRestaurantExists() {
         when(restaurantRepository.existsById(1L)).thenReturn(true);
 

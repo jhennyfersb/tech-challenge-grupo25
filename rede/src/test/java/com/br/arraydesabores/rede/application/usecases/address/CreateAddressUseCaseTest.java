@@ -53,10 +53,7 @@ class CreateAddressUseCaseTest {
         User userDomain = new User();
         userDomain.setName("Vinicius Norberto");
 
-        AddressCreateDTO addressCreateDTO = new AddressCreateDTO();
-        addressCreateDTO.setStreet("Rua dos Bobos");
-        addressCreateDTO.setNumber(123);
-        addressCreateDTO.setCity("São Paulo");
+        AddressCreateDTO addressCreateDTO = AddressCreateDTO.builder().street("Rua 1").number(123).city("São Paulo").build();
 
         Address addressDomain = new Address();
         addressDomain.setStreet(addressCreateDTO.getStreet());

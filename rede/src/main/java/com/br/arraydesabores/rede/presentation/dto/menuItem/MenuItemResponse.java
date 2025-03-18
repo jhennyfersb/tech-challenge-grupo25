@@ -18,7 +18,8 @@ public class MenuItemResponse extends BaseResponseDTO {
     private boolean availableOnlyInRestaurant;
     private String photoPath;
 
-    public void setPriceFormatted(String priceFormatted) {
+    public void setPrice(BigDecimal price) {
+        this.price = price;
         this.priceFormatted = NumberUtils.formatCurrency(this.price);
     }
 }
