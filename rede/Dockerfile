@@ -1,21 +1,26 @@
-# Use a imagem base do OpenJDK 21
-FROM openjdk:21-jdk-slim
+# Build stage - uses JDK for compilation
+FROM eclipse-temurin:21-jdk AS build
 
-
-# Copia o arquivo pom.xml e o código fonte para o contêiner
+# Copy the source code and pom.xml
 COPY pom.xml .
 COPY src ./src
 
-# Instala o Maven e constrói o projeto
+# Install Maven and build the project
 RUN apt-get update \
     && apt-get install -y maven \
     && mvn clean package -DskipTests
 
-# Expõe a porta que a aplicação Spring vai rodar
+# Runtime stage - uses JRE for running the application
+FROM eclipse-temurin:21-jre
+
+# Set working directory
+WORKDIR /app
+
+# Copy the built JAR from the build stage
+COPY --from=build target/rede-0.0.1-SNAPSHOT.jar app.jar
+
+# Expose the port the application runs on
 EXPOSE 8080
 
-# Copia o arquivo JAR gerado para o contêiner
-COPY target/rede-0.0.1-SNAPSHOT.jar app.jar
-
-# Comando para rodar a aplicação
+# Command to run the application
 CMD ["java", "-jar", "app.jar"]

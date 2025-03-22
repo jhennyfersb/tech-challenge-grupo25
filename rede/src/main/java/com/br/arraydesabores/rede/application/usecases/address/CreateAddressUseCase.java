@@ -1,14 +1,15 @@
 package com.br.arraydesabores.rede.application.usecases.address;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+
 import com.br.arraydesabores.rede.application.interfaces.IAddressGateway;
-import com.br.arraydesabores.rede.application.interfaces.IUserGateway;
 import com.br.arraydesabores.rede.domain.model.Address;
 import com.br.arraydesabores.rede.domain.model.User;
 import com.br.arraydesabores.rede.infrastructure.security.SecurityUtils;
 import com.br.arraydesabores.rede.presentation.dto.address.AddressCreateDTO;
+
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
